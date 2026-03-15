@@ -184,6 +184,27 @@ Add a BI dashboard layer
 
 ---
 
+## How to Run the Pipeline
+
+Running the Pipeline
+
+The pipeline can be executed using the AWS CLI.
+
+Step 1 – Trigger ingestion:
+
+aws lambda invoke \
+  --function-name retail-analytics-dev-ingestion-3f59eff9 \
+  --payload '{"load_date":"2024-03-14"}' \
+  response.json
+
+Step 2 – Run ETL jobs:
+
+aws glue start-job-run --job-name retail-analytics-dev-raw-to-bronze-3f59eff9
+aws glue start-job-run --job-name retail-analytics-dev-bronze-to-silver-3f59eff9
+aws glue start-job-run --job-name retail-analytics-dev-silver-to-gold-3f59eff9
+
+Step 3 – Query analytics tables using Athena.
+
 ## Why I Built This
 
 The goal was to build something closer to a real data engineering workflow instead of isolated scripts.
