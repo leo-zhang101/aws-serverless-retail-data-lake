@@ -33,6 +33,12 @@ CSV → Lambda → S3 Raw → Glue ETL → Bronze → Silver → Gold → Athena
 
 ---
 
+## Idempotent Pipeline Behaviour
+
+The pipeline is designed to be idempotent for a given `load_date`.
+
+Re-running the same pipeline for the same date overwrites the target output and produces the same result, which makes debugging and recovery easier.
+
 ## Project Structure
 
 serverless-aws-data-platform
