@@ -137,6 +137,14 @@ Lambda execution < $1
 
 Estimated total monthly cost: under $10.
 
+Observability
+
+The pipeline includes basic observability through AWS CloudWatch.
+
+Lambda execution logs are written to CloudWatch for ingestion debugging.
+Glue job logs are available through CloudWatch for ETL troubleshooting.
+
+This allows failed pipeline runs to be diagnosed through centralize
 ---
 
 ## Design Decisions
