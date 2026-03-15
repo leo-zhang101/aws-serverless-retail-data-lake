@@ -1,3 +1,44 @@
+# AWS Serverless Retail Data Platform
+
+Serverless retail analytics platform built on AWS using S3, Glue, Athena, Lambda and Terraform.
+
+## Architecture
+
+![Architecture](docs/architecture.png)
+
+## Tech Stack
+
+- AWS S3
+- AWS Glue
+- AWS Athena
+- AWS Lambda
+- AWS EventBridge
+- Terraform
+- Python
+- Parquet
+
+## Pipeline Flow
+
+1. Lambda uploads raw CSV files into the S3 raw layer
+2. Glue job transforms raw data into Bronze Parquet datasets
+3. Glue job cleans and standardizes Bronze data into Silver
+4. Glue job builds Gold analytics tables
+5. Athena queries Gold tables for analytics
+
+## Gold Analytics Tables
+
+- daily_sales
+- product_performance
+- customer_value
+
+## Example Query
+
+```sql
+SELECT *
+FROM daily_sales
+WHERE load_date = '2024-03-14';
+
+
 # serverless-aws-data-platform
 
 Retail analytics pipeline on AWS. Built to practice end-to-end data engineering: ingestion → ETL → query layer → BI.
