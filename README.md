@@ -4,7 +4,6 @@ Serverless retail analytics platform built on AWS using S3, Glue, Athena, Lambda
 
 ## Architecture
 
-
 ![Architecture](docs/architecture.png)
 
 ## Tech Stack
@@ -32,83 +31,52 @@ Serverless retail analytics platform built on AWS using S3, Glue, Athena, Lambda
 - product_performance
 - customer_value
 
-## Example Query
+## Why This Project
+
+I wanted a single repo that demonstrates:
+
+- Medallion-style data lake (raw / bronze / silver / gold)
+- Glue ETL with real PySpark, not just templates
+- Athena for ad-hoc querying
+- dbt for analytics models
+- Terraform for infrastructure
+
+This project uses an Australian retail context (AUD, NSW, VIC, QLD, etc.) because that is the market I am targeting.
+
+## Current Scope
+
+- **Ingestion**: Lambda reads CSV from `sample_data/` and uploads to the S3 raw layer. EventBridge can trigger it daily.
+- **ETL**: Three Glue jobs (`raw_to_bronze`, `bronze_to_silver`, `silver_to_gold`).
+- **Query**: Athena external tables over the Gold layer. dbt models on top for staging and marts.
+- **BI**: Athena result screenshots and dashboard-ready outputs.
+
+## Design Choices
+
+- **load_date as explicit parameter**: lets the same pipeline rerun for a specific date
+- **Overwrite instead of append**: simpler and easier to explain in a portfolio project
+- **Left joins on store/customer**: keeps records even when some reference data is missing
+- **Missing table = skip, not fail**: improves debugging during demo runs
+- **Athena over Redshift**: cheaper and easier for a serverless analytics demo
+- **dbt on Athena**: keeps analytics SQL versioned and testable
+
+## Limitations
+
+- No orchestration yet with Step Functions or Airflow
+- Sample data only, no CDC
+- No true incremental processing yet
+- dbt profile still configured manually
+
+## Runtime Evidence
+
+This project has already been executed successfully in AWS:
+
+- Lambda uploaded 7 source files into the S3 raw layer
+- Glue jobs completed successfully across raw → bronze → silver → gold
+- Athena queried partitioned Gold tables successfully
+
+## Example Athena Query
 
 ```sql
 SELECT *
 FROM daily_sales
 WHERE load_date = '2024-03-14';
-
-
-# serverless-aws-data-platform
-
-Retail analytics pipeline on AWS. Built to practice end-to-end data engineering: ingestion → ETL → query layer → BI.
-
-## Why this project
-
-I wanted a single repo that demonstrates:
-- Medallion-style data lake (raw/bronze/silver/gold)
-- Glue ETL with real PySpark, not just templates
-- Athena for ad-hoc querying
-- dbt for analytics models
-- Terraform for infra
-
-Australian retail context (AUD, NSW/VIC/QLD etc.) because that's the market I'm targeting.
-
-## Current scope
-
-- **Ingestion**: Lambda reads CSV from `sample_data/`, uploads to S3 raw. EventBridge can trigger daily.
-- **ETL**: 3 Glue jobs (raw→bronze→silver→gold). Bronze = Parquet + metadata. Silver = cleaned, deduped. Gold = analytics tables (daily_sales, product_performance, customer_value) + pass-through dims.
-- **Query**: Athena external tables over gold. dbt models on top for staging/marts.
-- **BI**: QuickSight or Athena result screenshots.
-
-## Design choices
-
-- **load_date as explicit param**: Lets you re-run for a specific date without changing code. Defaults to today.
-- **Overwrite, not append**: Simpler for demo. Real pipeline would use upsert or partition append.
-- **Left joins on store/customer**: Orders can exist without store_id; we still want them in daily_sales.
-- **Missing table = skip, not fail**: If one CSV didn't land, other tables still process. Easier to debug.
-- **Athena over Redshift**: Cheaper for small data. No cluster to manage.
-- **dbt on Athena**: Versioned SQL, tests. Glue does the heavy lifting; dbt does the modelling.
-
-## Limitations / intentional simplifications
-
-- No orchestration (Step Functions, Airflow). Glue jobs run manually or via EventBridge.
-- Sample data only. No CDC, no incremental.
-- Single region (ap-southeast-2). No cross-region.
-- dbt profile must be configured manually; not in Terraform.
-
-## Run flow
-
-```bash
-cd infrastructure/terraform
-terraform init && terraform validate && terraform apply
-
-# Lambda (use load_date to match your test data)
-aws lambda invoke --function-name $(terraform output -raw lambda_ingestion_name) \
-  --payload '{"load_date":"2024-03-14"}' response.json
-
-# Glue (in order)
-terraform output glue_job_names
-aws glue start-job-run --job-name <raw-to-bronze>
-# wait for SUCCEEDED, then bronze-to-silver, then silver-to-gold
-
-# Athena: replace REPLACE_GOLD_BUCKET in create_external_tables.sql, run DDL, MSCK REPAIR, then sample_analytics_queries.sql
-```
-
-See [docs/RUN_CHECKLIST.md](docs/RUN_CHECKLIST.md) for the full sequence.
-
-## Tests
-
-```bash
-python3 -m unittest discover tests/ -v
-```
-
-Lambda handler (mocked S3) and customer_value aggregation logic.
-
-## Docs
-
-- [Architecture](docs/architecture.md)
-- [Run Checklist](docs/RUN_CHECKLIST.md)
-- [Athena Runbook](docs/athena_runbook.md)
-- [Terraform Validation](docs/terraform_validation_checklist.md)
