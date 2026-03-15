@@ -81,6 +81,7 @@ This project has already been executed successfully in AWS:
 SELECT *
 FROM daily_sales
 WHERE load_date = '2024-03-14';
+```
 
 ### Query Result
 
