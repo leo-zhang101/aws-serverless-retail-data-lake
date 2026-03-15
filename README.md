@@ -97,13 +97,16 @@ Tables are partitioned by **load_date** to improve Athena query performance.
 
 ## Example Query
 
-SELECT *
+SELECT
+  store_state,
+  SUM(total_sales_aud) AS total_revenue
 FROM daily_sales
-WHERE load_date = '2024-03-14';
+WHERE load_date = '2024-03-14'
+GROUP BY store_state;
 
 Query result:
 
-![Athena Query Result](docs/athena_query_result.png)
+![Athena Query Result](docs/athena_state_revenue.png)
 
 ---
 
