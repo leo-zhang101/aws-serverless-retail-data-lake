@@ -97,13 +97,16 @@ Tables are partitioned by **load_date** to improve Athena query performance.
 
 ## Example Query
 
-SELECT *
+SELECT
+  store_state,
+  SUM(total_sales_aud) AS total_revenue
 FROM daily_sales
-WHERE load_date = '2024-03-14';
+WHERE load_date = '2024-03-14'
+GROUP BY store_state;
 
 Query result:
 
-![Athena Query Result](docs/athena_query_result.png)
+![Athena Query Result](docs/athena_state_revenue.png)
 
 ---
 
@@ -137,6 +140,14 @@ Lambda execution < $1
 
 Estimated total monthly cost: under $10.
 
+Observability
+
+The pipeline includes basic observability through AWS CloudWatch.
+
+Lambda execution logs are written to CloudWatch for ingestion debugging.
+Glue job logs are available through CloudWatch for ETL troubleshooting.
+
+This allows failed pipeline runs to be diagnosed through centralize
 ---
 
 ## Design Decisions
@@ -175,6 +186,27 @@ Add monitoring and alerting
 Add a BI dashboard layer  
 
 ---
+
+## How to Run the Pipeline
+
+Running the Pipeline
+
+The pipeline can be executed using the AWS CLI.
+
+Step 1 – Trigger ingestion:
+
+aws lambda invoke \
+  --function-name retail-analytics-dev-ingestion-3f59eff9 \
+  --payload '{"load_date":"2024-03-14"}' \
+  response.json
+
+Step 2 – Run ETL jobs:
+
+aws glue start-job-run --job-name retail-analytics-dev-raw-to-bronze-3f59eff9
+aws glue start-job-run --job-name retail-analytics-dev-bronze-to-silver-3f59eff9
+aws glue start-job-run --job-name retail-analytics-dev-silver-to-gold-3f59eff9
+
+Step 3 – Query analytics tables using Athena.
 
 ## Why I Built This
 
