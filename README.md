@@ -4,7 +4,9 @@ Serverless retail analytics platform built on AWS using S3, Glue, Athena, Lambda
 
 ## Architecture
 
+## Architecture
 
+![Architecture](docs/architecture.png)
 
 ## Tech Stack
 
