@@ -78,5 +78,9 @@ This project has already been executed successfully in AWS:
 
 ```sql
 SELECT *
+
+## Query Result
+
+![Athena Query](docs/athena_query_result.png)
 FROM daily_sales
 WHERE load_date = '2024-03-14';
