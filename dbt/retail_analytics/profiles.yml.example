@@ -1,0 +1,22 @@
+# Copy to ~/.dbt/profiles.yml or ./profiles.yml
+# Replace placeholder values with your AWS/Athena config
+
+retail_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: athena
+      s3_staging_dir: s3://your-athena-results-bucket/athena-results/
+      region_name: ap-southeast-2
+      database: retail_analytics
+      workgroup: retail-analytics
+      num_retries: 2
+      threads: 4
+    prod:
+      type: athena
+      s3_staging_dir: s3://your-athena-results-bucket/athena-results/
+      region_name: ap-southeast-2
+      database: retail_analytics
+      workgroup: retail-analytics
+      num_retries: 2
+      threads: 8

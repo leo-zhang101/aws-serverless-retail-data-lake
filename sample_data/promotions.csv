@@ -1,0 +1,4 @@
+promotion_id,promotion_name,discount_type,discount_value_pct,start_date,end_date,active
+PROMO01,Summer Sale,percentage,15,2024-01-01,2024-01-31,true
+PROMO02,Member Discount,percentage,10,2024-02-01,2024-12-31,true
+PROMO03,Clearance,percentage,25,2024-02-15,2024-02-29,true

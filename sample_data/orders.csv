@@ -1,0 +1,4 @@
+order_id,customer_id,store_id,order_date,total_amount_aud,status,promotion_id
+1001,1,S001,2024-02-01,149.99,completed,PROMO01
+1002,2,S002,2024-02-02,89.50,completed,PROMO02
+1003,1,S001,2024-02-03,234.00,completed,PROMO01

@@ -1,0 +1,59 @@
+# Source definitions for retail analytics
+# These map to Athena external tables over S3 gold/silver layer
+
+version: 2
+
+sources:
+  - name: gold
+    description: Curated gold layer tables from Glue ETL
+    database: retail_analytics
+    schema: gold
+    tables:
+      - name: customers
+        description: Customer dimension
+        columns:
+          - name: customer_id
+            description: Unique customer identifier
+          - name: state
+            description: Australian state (NSW, VIC, QLD, etc.)
+      - name: orders
+        description: Order fact table
+        columns:
+          - name: order_id
+          - name: customer_id
+          - name: store_id
+          - name: order_date
+          - name: total_amount_aud
+          - name: status
+          - name: promotion_id
+      - name: products
+        description: Product dimension
+        columns:
+          - name: product_id
+          - name: category
+          - name: unit_price_aud
+      - name: payments
+        description: Payment fact
+        columns:
+          - name: payment_id
+          - name: order_id
+          - name: amount_aud
+      - name: stores
+        description: Store dimension
+        columns:
+          - name: store_id
+          - name: state
+      - name: promotions
+        description: Promotion dimension
+        columns:
+          - name: promotion_id
+          - name: start_date
+          - name: end_date
+      - name: order_items
+        description: Order line items for product-level analytics
+        columns:
+          - name: order_item_id
+          - name: order_id
+          - name: product_id
+          - name: quantity
+          - name: line_total_aud

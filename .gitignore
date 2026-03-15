@@ -1,0 +1,52 @@
+# Terraform
+*.tfstate
+terraform.tfvars
+lambda_ingestion.zip
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+.env
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# dbt
+dbt/logs/
+dbt/target/
+dbt/dbt_packages/
+retail_analytics/dbt_packages/
+retail_analytics/logs/
+retail_analytics/target/
+retail_analytics/profiles.yml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# AWS
+.aws/
+
+# Secrets
+*.pem
+*.key
+secrets/

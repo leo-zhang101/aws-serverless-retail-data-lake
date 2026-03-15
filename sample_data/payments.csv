@@ -1,0 +1,4 @@
+payment_id,order_id,amount_aud,payment_method,payment_date
+PAY001,1001,149.99,card,2024-02-01
+PAY002,1002,89.50,card,2024-02-02
+PAY003,1003,234.00,card,2024-02-03

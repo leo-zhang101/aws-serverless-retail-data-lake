@@ -1,0 +1,4 @@
+customer_id,first_name,last_name,email,state,created_at
+1,Jane,Smith,jane.smith@email.com.au,NSW,2024-01-15
+2,Michael,Jones,michael.jones@email.com.au,VIC,2024-01-16
+3,Sarah,Williams,sarah.w@email.com.au,QLD,2024-01-17

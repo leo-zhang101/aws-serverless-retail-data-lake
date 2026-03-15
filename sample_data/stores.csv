@@ -1,0 +1,6 @@
+store_id,store_name,state,city,opened_at
+S001,Sydney CBD,NSW,Sydney,2020-01-15
+S002,Melbourne Central,VIC,Melbourne,2019-06-01
+S003,Brisbane Queen Street,QLD,Brisbane,2021-03-10
+S004,Perth Hay Street,WA,Perth,2022-08-20
+

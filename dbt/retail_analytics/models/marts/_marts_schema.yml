@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: mart_daily_sales
+    description: Daily sales summary by store state (AUD)
+    columns:
+      - name: sale_date
+        tests: [not_null]
+      - name: order_count
+        tests: [not_null]
+      - name: total_sales_aud
+        tests: [not_null]
+
+  - name: mart_product_performance
+    description: Product-level revenue and quantity metrics
+    columns:
+      - name: product_id
+        tests: [unique, not_null]
+      - name: total_revenue_aud
+        tests: [not_null]
+
+  - name: mart_customer_value
+    description: Customer lifetime value and order metrics
+    columns:
+      - name: customer_id
+        tests: [unique, not_null]
+      - name: total_spend_aud
+        tests: [not_null]

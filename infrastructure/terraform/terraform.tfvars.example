@@ -1,0 +1,10 @@
+# Copy to terraform.tfvars and adjust for your environment.
+# terraform.tfvars is gitignored; do not commit secrets.
+
+project_name = "retail-analytics"
+environment  = "dev"
+aws_region   = "ap-southeast-2"
+
+# Glue job sizing - G.1X is cost-effective for dev; use G.2X for larger datasets
+glue_job_worker_type       = "G.1X"
+glue_job_number_of_workers = 2
